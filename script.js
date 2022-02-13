@@ -1,43 +1,75 @@
 function add(a,b) {
+    console.log(a+b);
     return a+b;
 }
 function subtract(a,b){
+    console.log(a-b);
     return a-b;
 }
 function multiply(a,b) {
+    console.log(a*b);
     return a*b;
 }
 function divide(a,b) {
+    console.log(a/b);
     return a/b;
 }
-function operate(n1,operator,n2) {
-    switch (operator) {
+
+function operate() {
+    switch (operatorValue) {
         case "+":
-             add(n1,n2)
+             add(parseFloat(firstValue),parseFloat(displayValue));
             break;
         case "-":
-            subtract(n1,n2)
+            subtract(parseFloat(firstValue),parseFloat(displayValue))
             break;
         case "x":
-            multiply(n1,n2)
+            multiply(parseFloat(firstValue),parseFloat(displayValue))
             break;
         case "÷":
-            divide(n1,n2)
+            divide(parseFloat(firstValue),parseFloat(displayValue))
             break;
     }
 }
+
 const display = document.querySelector("#display-text");
+const currentOperation = document.querySelector("#current-operation");
+const previousOperation = document.querySelector("#previous-operation");
+
+
+let displayValue = "";
+let firstValue = "";
+let operatorValue = "";
+
+const operator = document.querySelectorAll(".digit.operand");
+operator.forEach((operator)=> operator.addEventListener('click',(operator) => {
+    firstValue = displayValue;
+    operatorValue = operator.target.value;
+    previousOperation.textContent = displayValue + operatorValue;
+    displayValue = "";
+    currentOperation.textContent = "";
+    console.log(firstValue);
+    console.log(operatorValue);
+}));
+
 function addDisplay(e) {
-    display.textContent += e.target.textContent;
+    currentOperation.textContent += e.target.textContent;
+    displayValue += e.target.textContent;
 }
 
-const digits = document.querySelectorAll(".digit");
+const digits = document.querySelectorAll(".digit.number");
+
 digits.forEach((digit)=> digit.addEventListener('click',addDisplay));
-
-
 
 const clear = document.querySelector('.clear');
 
 clear.addEventListener('click',(e)=> {
-    display.textContent = "";
+    displayValue = "";
+    firstValue = "";
+    operatorValue = "";
+    previousOperation.textContent = "";
+    currentOperation.textContent = "";
 });
+
+const result = document.querySelector(".result");
+result.addEventListener("click",operate);
