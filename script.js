@@ -1,5 +1,6 @@
 function add(a,b) {
     console.log(a+b);
+    currentOperation.textContent = a+b;
     return a+b;
 }
 function subtract(a,b){
@@ -8,6 +9,7 @@ function subtract(a,b){
 }
 function multiply(a,b) {
     console.log(a*b);
+    
     return a*b;
 }
 function divide(a,b) {
@@ -42,27 +44,35 @@ let firstValue = "";
 let operatorValue = "";
 
 const operator = document.querySelectorAll(".digit.operand");
+
 operator.forEach((operator)=> operator.addEventListener('click',(operator) => {
-    firstValue = displayValue;
+    firstValue = currentOperation.textContent;
     operatorValue = operator.target.value;
-    previousOperation.textContent = displayValue + operatorValue;
-    displayValue = "";
+    if (previousOperation.textContent === "") {
+        previousOperation.textContent = currentOperation.textContent + operatorValue;
+        // firstValue = displayValue;
+        displayValue = "";
+    }
+    else if(previousOperation.textContent !== "" && currentOperation.textContent !== ""){
+        console.log("bruh");
+        operate();
+    }
     currentOperation.textContent = "";
-    console.log(firstValue);
-    console.log(operatorValue);
 }));
+
+
 
 function addDisplay(e) {
     currentOperation.textContent += e.target.textContent;
     displayValue += e.target.textContent;
 }
-
 const digits = document.querySelectorAll(".digit.number");
 
 digits.forEach((digit)=> digit.addEventListener('click',addDisplay));
 
-const clear = document.querySelector('.clear');
 
+
+const clear = document.querySelector('.clear');
 clear.addEventListener('click',(e)=> {
     displayValue = "";
     firstValue = "";
@@ -72,4 +82,7 @@ clear.addEventListener('click',(e)=> {
 });
 
 const result = document.querySelector(".result");
-result.addEventListener("click",operate);
+result.addEventListener("click",()=> {
+    previousOperation.textContent += displayValue + "=";
+    operate();
+});

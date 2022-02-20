@@ -7,18 +7,35 @@
     width: 400px;
     flex-direction: column;
     flex-wrap: wrap;
+    margin-top: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 .display{
     display: flex;
     flex-direction: column;
     border: 1px solid black;
-    height: 100px;
     margin: 7px;
+    height: 100px;
     flex-wrap: wrap;
-    overflow: hidden;
 }
-.display>*{
-    border: 1px solid red;
+.display > *{
+    display: flex;
     flex: 1;
+    border: 1px red solid;
+}
 
+button{
+    margin: 1px;
+    width: 125px;
+    height: 50px;
+}
+button:last-child{
+    flex-grow: 1;
+}
+.buttons{
+    justify-content: space-around;
+    margin: 7px;
+    display: flex;
+    flex-wrap: wrap;
 }
