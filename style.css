@@ -7,31 +7,32 @@
     width: 400px;
     flex-direction: column;
     flex-wrap: wrap;
-    margin-top: auto;
+    margin-top: 60px;
     margin-left: auto;
     margin-right: auto;
 }
 .display{
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    flex-wrap: wrap;
     border: 1px solid black;
     margin: 7px;
     height: 100px;
-    flex-wrap: wrap;
 }
 .display > *{
+    max-height: 100%;
+    max-width: 100%;
+    word-break: break-word;
+    overflow: hidden;
     display: flex;
-    flex: 1;
-    border: 1px red solid;
+    align-self: flex-end;
+    flex-grow: 1;
 }
-
 button{
     margin: 1px;
     width: 125px;
     height: 50px;
-}
-button:last-child{
-    flex-grow: 1;
 }
 .buttons{
     justify-content: space-around;

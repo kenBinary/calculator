@@ -1,37 +1,32 @@
 function add(a,b) {
-    console.log(a+b);
-    currentOperation.textContent = a+b;
     return a+b;
 }
 function subtract(a,b){
-    console.log(a-b);
     return a-b;
 }
 function multiply(a,b) {
-    console.log(a*b);
-    
     return a*b;
 }
 function divide(a,b) {
-    console.log(a/b);
     return a/b;
 }
 
 function operate() {
-    switch (operatorValue) {
-        case "+":
-             add(parseFloat(firstValue),parseFloat(displayValue));
-            break;
-        case "-":
-            subtract(parseFloat(firstValue),parseFloat(displayValue))
-            break;
-        case "x":
-            multiply(parseFloat(firstValue),parseFloat(displayValue))
-            break;
-        case "÷":
-            divide(parseFloat(firstValue),parseFloat(displayValue))
-            break;
-    }
+
+        switch (operatorValue) {
+            case "+":
+                 return add(parseFloat(firstValue),parseFloat(displayValue));
+                // break;
+            case "-":
+                return subtract(parseFloat(firstValue),parseFloat(displayValue))
+                // break;
+            case "x":
+                return multiply(parseFloat(firstValue),parseFloat(displayValue))
+                // break;
+            case "÷":
+                return divide(parseFloat(firstValue),parseFloat(displayValue))
+                // break;
+        }
 }
 
 const display = document.querySelector("#display-text");
@@ -46,29 +41,64 @@ let operatorValue = "";
 const operator = document.querySelectorAll(".digit.operand");
 
 operator.forEach((operator)=> operator.addEventListener('click',(operator) => {
-    firstValue = currentOperation.textContent;
-    operatorValue = operator.target.value;
-    if (previousOperation.textContent === "") {
+    if(operatorValue === "÷" && displayValue === "0"){
+        currentOperation.textContent = "bruh";
+        previousOperation.textContent ="bruh";
+    }
+    else if (previousOperation.textContent === "") {
+        operatorValue = operator.target.value;
         previousOperation.textContent = currentOperation.textContent + operatorValue;
-        // firstValue = displayValue;
+        firstValue = displayValue;
         displayValue = "";
+        currentOperation.textContent = "";
     }
-    else if(previousOperation.textContent !== "" && currentOperation.textContent !== ""){
-        console.log("bruh");
-        operate();
+    else if(firstValue !== ""){
+        console.log(firstValue);
+        console.log(displayValue);
+        console.log(operate());
+        firstValue = operate();
+        previousOperation.textContent = firstValue + operatorValue;
+        currentOperation.textContent = ""
+        displayValue = "";
+        operatorValue = operator.target.value;
     }
-    currentOperation.textContent = "";
 }));
 
+const backspace = document.querySelector(".backspace");
 
+function removeDisplay(e){
+    let removed = displayValue.substring(0,displayValue.length-1);
+    displayValue = removed;
+    currentOperation.textContent = removed;
+}
+backspace.addEventListener('click',removeDisplay);
 
 function addDisplay(e) {
+
+    if (displayValue.includes(".")) {
+        const decimal = document.querySelector(".digit.decimal");
+        decimal.disabled = true;
+    }
     currentOperation.textContent += e.target.textContent;
     displayValue += e.target.textContent;
 }
 const digits = document.querySelectorAll(".digit.number");
 
 digits.forEach((digit)=> digit.addEventListener('click',addDisplay));
+
+function addDisplayKey(e) {
+    let pattern = /[0-9]/g;
+    if (displayValue.includes(".")) {
+        const decimal = document.querySelector(".digit.decimal");
+        decimal.disabled = true;
+    }
+    if (pattern.test(e.key)) {
+        currentOperation.textContent += e.key;  
+        displayValue += e.key;  
+    }
+}
+
+document.addEventListener('keydown',addDisplayKey);
 
 
 
@@ -83,6 +113,16 @@ clear.addEventListener('click',(e)=> {
 
 const result = document.querySelector(".result");
 result.addEventListener("click",()=> {
-    previousOperation.textContent += displayValue + "=";
-    operate();
+    if(operatorValue === "÷" && displayValue === "0"){
+        currentOperation.textContent = "bruh";
+        previousOperation.textContent ="bruh";
+    }
+    else{
+        previousOperation.textContent = operate();
+        currentOperation.textContent = operate();
+        firstValue = "";
+        displayValue = "";
+        operatorValue = "";
+    }
+
 });
